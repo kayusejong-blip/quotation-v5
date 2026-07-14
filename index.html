@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자동 견적서 작성 프로그램 v5.6</title>
+    <title>자동 견적서 작성 프로그램 v5.7</title>
     <!-- Cache Busters for style and script -->
-    <link rel="stylesheet" href="style.css?v=5.6.0">
+    <link rel="stylesheet" href="style.css?v=5.7.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -72,10 +72,10 @@
             <div class="settings-panel">
                 <h3>⚙️ 설정</h3>
                 <div class="input-group">
-                    <label for="discountRate">할인율 (%)</label>
+                    <label for="discountRate">기본 할인율 (%)</label>
                     <div style="display: flex; gap: 0.5rem;">
                         <input type="number" id="discountRate" value="10" min="0" max="100">
-                        <button id="applyDiscountBtn" class="btn btn-primary" style="padding: 0.5rem 1rem; width: auto;">적용</button>
+                        <button id="applyDiscountBtn" class="btn btn-primary" style="padding: 0.5rem 1rem; width: auto;">일괄 적용</button>
                     </div>
                 </div>
 
@@ -84,6 +84,7 @@
             <div class="update-log-area card">
                 <h3>📝 업데이트 로그</h3>
                 <ul class="update-log-list">
+                    <li><strong>v5.7:</strong> 일괄 할인율 방식을 폐지하고 각 항목별로 할인율(%)을 개별 조절할 수 있도록 개선</li>
                     <li><strong>v5.6:</strong> 헬스매트 단가를 묶음가 입력 시 1개 단가로 자동 계산하여 반영하도록 수정</li>
                     <li><strong>v5.5:</strong> 자주 사용하는 품목(헬스매트) 추가 시 단가를 직접 입력할 수 있는 기능 추가</li>
                     <li><strong>v5.4:</strong> 설정 영역의 할인율 직접 입력 옆 '적용' 버튼 추가 및 UI 최적화</li>
@@ -94,7 +95,7 @@
             </div>
 
             <div class="version-tag">
-                Version: <strong>v5.6</strong>
+                Version: <strong>v5.7</strong>
             </div>
         </aside>
 
@@ -161,11 +162,12 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%;">No.</th>
-                                    <th style="width: 30%;">상품명</th>
-                                    <th style="width: 25%;">옵션(규격)</th>
-                                    <th style="width: 12%;">수량(개/㎡)</th>
-                                    <th style="width: 13%;">단가</th>
-                                    <th style="width: 10%;">합계</th>
+                                    <th style="width: 25%;">상품명</th>
+                                    <th style="width: 20%;">옵션(규격)</th>
+                                    <th style="width: 10%;">수량(개/㎡)</th>
+                                    <th style="width: 12%;">단가</th>
+                                    <th style="width: 10%;">할인(%)</th>
+                                    <th style="width: 13%;">합계</th>
                                     <th class="no-print" style="width: 5%;">삭제</th>
                                 </tr>
                             </thead>
@@ -174,18 +176,17 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5" class="text-right"><strong>총 공급가액</strong></td>
+                                    <td colspan="6" class="text-right"><strong>총 공급가액</strong></td>
                                     <td class="text-right" id="subtotal">0</td>
                                     <td class="no-print"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right"><strong>할인금액 (<span
-                                                id="discountLabel">0</span>%)</strong></td>
+                                    <td colspan="6" class="text-right"><strong>총 할인금액</strong></td>
                                     <td class="text-right discount-text" id="discountAmount">0</td>
                                     <td class="no-print"></td>
                                 </tr>
                                 <tr class="final-row">
-                                    <td colspan="5" class="text-right"><strong>최종 결제 금액 (합계)</strong></td>
+                                    <td colspan="6" class="text-right"><strong>최종 결제 금액 (합계)</strong></td>
                                     <td class="text-right final-amount" id="finalTotal">0</td>
                                     <td class="no-print"></td>
                                 </tr>
@@ -284,7 +285,7 @@
 
     <div id="mobile-overlay" class="no-print"></div>
 
-    <script src="script.js?v=5.6.0"></script>
+    <script src="script.js?v=5.7.0"></script>
 </body>
 
 </html>

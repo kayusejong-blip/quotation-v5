@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 v5.6 스크립트 로드 완료');
+    console.log('🚀 v5.7 스크립트 로드 완료');
 
     // --- Core Selectors ---
     const navTabs = document.querySelectorAll('.nav-tab');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountAmountEl = document.getElementById('discountAmount');
     const finalTotalEl = document.getElementById('finalTotal');
     const totalAmountTextEl = document.getElementById('totalAmountText');
-    const discountLabelEl = document.getElementById('discountLabel');
+    const totalAmountTextEl = document.getElementById('totalAmountText');
     const currentDateEl = document.getElementById('currentDate');
 
     const pdfBtn = document.getElementById('pdfBtn');
@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (discountRateInput) {
         discountRateInput.value = 10;
-        if (discountLabelEl) discountLabelEl.innerText = discountRateInput.value;
     }
     updateTotals();
 
@@ -84,8 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const applyDiscountBtn = document.getElementById('applyDiscountBtn');
     if (applyDiscountBtn) {
         applyDiscountBtn.addEventListener('click', () => {
+            const globalDisc = discountRateInput ? discountRateInput.value : 0;
+            const rows = itemBody.querySelectorAll('tr');
+            rows.forEach(r => {
+                const discCell = r.querySelector('.item-disc');
+                if (discCell) discCell.innerText = globalDisc;
+            });
             updateTotals();
-            alert('대장님, 할인율이 적용되었습니다!');
+            alert(`대장님, 모든 항목에 ${globalDisc}% 할인율이 일괄 적용되었습니다!`);
         });
     }
 
@@ -278,12 +283,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Core Functions (addRow, updateTotals, etc.) ---
-    function addRow(name = "", option = "", qty = "", price = "") {
+    function addRow(name = "", option = "", qty = "", price = "", disc = "") {
         if (!itemBody) return;
         const tr = document.createElement('tr');
         const rowCount = itemBody.children.length + 1;
         const displayPrice = price ? Number(stripCommas(price)).toLocaleString('ko-KR') : "";
         const displayQty = qty ? Number(stripCommas(qty)).toLocaleString('ko-KR') : "";
+        
+        let displayDisc = disc;
+        if (disc === "" && discountRateInput) {
+            displayDisc = discountRateInput.value || "0";
+        } else if (disc === "") {
+            displayDisc = "0";
+        }
 
         tr.innerHTML = `
             <td>${rowCount}</td>
@@ -291,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td><div class="editable-cell item-option" contenteditable="true">${option}</div></td>
             <td><div class="editable-cell item-qty" contenteditable="true">${displayQty}</div></td>
             <td><div class="editable-cell item-price" contenteditable="true">${displayPrice}</div></td>
+            <td><div class="editable-cell item-disc" contenteditable="true">${displayDisc}</div></td>
             <td class="text-right item-row-total"></td>
             <td class="no-print"><button class="btn-danger remove-row">×</button></td>
         `;
@@ -320,24 +333,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateTotals() {
         const rows = itemBody.querySelectorAll('tr');
-        let total = 0;
+        let totalOriginal = 0;
+        let totalDiscount = 0;
+        let finalTotal = 0;
+
         rows.forEach(r => {
             const q = parseFloat(stripCommas(r.querySelector('.item-qty').innerText)) || 0;
             const p = parseFloat(stripCommas(r.querySelector('.item-price').innerText)) || 0;
-            const rowTotal = q * p;
-            r.querySelector('.item-row-total').innerText = rowTotal > 0 ? rowTotal.toLocaleString('ko-KR') : '';
-            total += rowTotal;
+            const d = parseFloat(stripCommas(r.querySelector('.item-disc').innerText)) || 0;
+            
+            const originalRowTotal = q * p;
+            const rowDiscAmount = Math.floor(originalRowTotal * (d / 100));
+            const finalRowTotal = originalRowTotal - rowDiscAmount;
+            
+            const rowTotalCell = r.querySelector('.item-row-total');
+            if (rowTotalCell) {
+                rowTotalCell.innerText = finalRowTotal > 0 ? finalRowTotal.toLocaleString('ko-KR') : (originalRowTotal > 0 ? '0' : '');
+            }
+            
+            totalOriginal += originalRowTotal;
+            totalDiscount += rowDiscAmount;
+            finalTotal += finalRowTotal;
         });
 
-        const discRate = parseFloat(discountRateInput.value) || 0;
-        const discAmount = Math.floor(total * (discRate / 100));
-        const final = total - discAmount;
-
-        subtotalEl.innerText = total.toLocaleString('ko-KR');
-        discountAmountEl.innerText = `- ${discAmount.toLocaleString('ko-KR')}`;
-        finalTotalEl.innerText = final.toLocaleString('ko-KR');
-        totalAmountTextEl.innerText = `￦ ${final.toLocaleString('ko-KR')}`;
-        if (discountLabelEl) discountLabelEl.innerText = discRate;
+        if (subtotalEl) subtotalEl.innerText = totalOriginal.toLocaleString('ko-KR');
+        if (discountAmountEl) discountAmountEl.innerText = `- ${totalDiscount.toLocaleString('ko-KR')}`;
+        if (finalTotalEl) finalTotalEl.innerText = finalTotal.toLocaleString('ko-KR');
+        if (totalAmountTextEl) totalAmountTextEl.innerText = `￦ ${finalTotal.toLocaleString('ko-KR')}`;
     }
 
     // --- Mobile Sidebar ---
@@ -397,7 +419,10 @@ document.addEventListener('DOMContentLoaded', () => {
         itemBody.innerHTML = '';
         if (data.customer) document.getElementById('customerName').innerText = data.customer;
         discountRateInput.value = data.discountRate || 0;
-        data.items.forEach(i => addRow(i.name, i.option, i.qty, i.price));
+        data.items.forEach(i => {
+            const discValue = i.disc !== undefined ? i.disc : (data.discountRate || "0");
+            addRow(i.name, i.option, i.qty, i.price, discValue);
+        });
         updateTotals();
     }
 
@@ -407,7 +432,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: r.querySelector('.item-name').innerText,
                 option: r.querySelector('.item-option').innerText,
                 qty: r.querySelector('.item-qty').innerText,
-                price: r.querySelector('.item-price').innerText
+                price: r.querySelector('.item-price').innerText,
+                disc: r.querySelector('.item-disc').innerText
             }));
             const data = getStorageData();
             data.push({ id: Date.now(), customer: document.getElementById('customerName').innerText, items, discountRate: discountRateInput.value, isFav: false });
