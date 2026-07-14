@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountAmountEl = document.getElementById('discountAmount');
     const finalTotalEl = document.getElementById('finalTotal');
     const totalAmountTextEl = document.getElementById('totalAmountText');
-    const totalAmountTextEl = document.getElementById('totalAmountText');
     const currentDateEl = document.getElementById('currentDate');
 
     const pdfBtn = document.getElementById('pdfBtn');
