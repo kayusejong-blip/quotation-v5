@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 v5.5 스크립트 로드 완료');
+    console.log('🚀 v5.6 스크립트 로드 완료');
 
     // --- Core Selectors ---
     const navTabs = document.querySelectorAll('.nav-tab');
@@ -94,14 +94,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addMat20Btn) {
         addMat20Btn.addEventListener('click', () => {
             const priceInput = document.getElementById('priceMat20');
-            const price = priceInput ? priceInput.value : "8163";
+            const bundlePrice = priceInput && priceInput.value ? parseFloat(priceInput.value) : 32650;
+            // 20t는 4개 묶음이므로 4로 나누어 1개 단가 계산
+            const price = Math.round(bundlePrice / 4).toString();
             addRow("헬스매트", "20t", "1", price);
         });
     }
     if (addMat25Btn) {
         addMat25Btn.addEventListener('click', () => {
             const priceInput = document.getElementById('priceMat25');
-            const price = priceInput ? priceInput.value : "9967";
+            const bundlePrice = priceInput && priceInput.value ? parseFloat(priceInput.value) : 31900;
+            // 25t는 3개 묶음이므로 3으로 나누어 1개 단가 계산
+            const price = Math.round(bundlePrice / 3).toString();
             addRow("헬스매트", "25t", "1", price);
         });
     }
