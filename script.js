@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 v5.7 스크립트 로드 완료');
+    console.log('🚀 v5.8 스크립트 로드 완료');
 
     // --- Core Selectors ---
     const navTabs = document.querySelectorAll('.nav-tab');

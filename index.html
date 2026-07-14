@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자동 견적서 작성 프로그램 v5.7</title>
+    <title>자동 견적서 작성 프로그램 v5.8</title>
     <!-- Cache Busters for style and script -->
-    <link rel="stylesheet" href="style.css?v=5.7.0">
+    <link rel="stylesheet" href="style.css?v=5.8.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -45,12 +45,12 @@
                 <div class="quick-add-section card">
                     <h3>⭐ 자주 사용하는 품목</h3>
                     <div class="btn-group-horizontal" style="margin-bottom: 0.5rem; align-items: center;">
-                        <button id="addMat20" class="btn btn-secondary btn-sm" style="flex: 2;">🧘 헬스매트 20t</button>
-                        <input type="number" id="priceMat20" placeholder="4개 묶음가" value="32650" style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 0.4rem; font-size: 0.9rem;" title="4개 묶음 가격을 입력하세요">
+                        <button id="addMat20" class="btn btn-secondary btn-sm" style="flex: 1; white-space: nowrap;">🧘 헬스매트 20t (4p)</button>
+                        <input type="number" id="priceMat20" placeholder="4p묶음" value="32650" style="width: 90px; flex: none; padding: 0.5rem 0.3rem; border: 1px solid var(--border-color); border-radius: 0.4rem; font-size: 0.85rem; text-align: center;" title="4개 묶음 가격을 입력하세요">
                     </div>
                     <div class="btn-group-horizontal" style="align-items: center;">
-                        <button id="addMat25" class="btn btn-secondary btn-sm" style="flex: 2;">🧘 헬스매트 25t</button>
-                        <input type="number" id="priceMat25" placeholder="3개 묶음가" value="31900" style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 0.4rem; font-size: 0.9rem;" title="3개 묶음 가격을 입력하세요">
+                        <button id="addMat25" class="btn btn-secondary btn-sm" style="flex: 1; white-space: nowrap;">🧘 헬스매트 25t (3p)</button>
+                        <input type="number" id="priceMat25" placeholder="3p묶음" value="31900" style="width: 90px; flex: none; padding: 0.5rem 0.3rem; border: 1px solid var(--border-color); border-radius: 0.4rem; font-size: 0.85rem; text-align: center;" title="3개 묶음 가격을 입력하세요">
                     </div>
                 </div>
 
@@ -84,6 +84,7 @@
             <div class="update-log-area card">
                 <h3>📝 업데이트 로그</h3>
                 <ul class="update-log-list">
+                    <li><strong>v5.8:</strong> 즐겨찾는 품목(헬스매트) 버튼 UI 최적화 (묶음 수량 표기 및 버튼 폭 확장)</li>
                     <li><strong>v5.7:</strong> 일괄 할인율 방식을 폐지하고 각 항목별로 할인율(%)을 개별 조절할 수 있도록 개선</li>
                     <li><strong>v5.6:</strong> 헬스매트 단가를 묶음가 입력 시 1개 단가로 자동 계산하여 반영하도록 수정</li>
                     <li><strong>v5.5:</strong> 자주 사용하는 품목(헬스매트) 추가 시 단가를 직접 입력할 수 있는 기능 추가</li>
@@ -95,7 +96,7 @@
             </div>
 
             <div class="version-tag">
-                Version: <strong>v5.7</strong>
+                Version: <strong>v5.8</strong>
             </div>
         </aside>
 
@@ -285,7 +286,7 @@
 
     <div id="mobile-overlay" class="no-print"></div>
 
-    <script src="script.js?v=5.7.0"></script>
+    <script src="script.js?v=5.8.0"></script>
 </body>
 
 </html>
