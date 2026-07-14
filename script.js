@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 v5.4 스크립트 로드 완료');
+    console.log('🚀 v5.5 스크립트 로드 완료');
 
     // --- Core Selectors ---
     const navTabs = document.querySelectorAll('.nav-tab');
@@ -91,8 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addMat20Btn = document.getElementById('addMat20');
     const addMat25Btn = document.getElementById('addMat25');
-    if (addMat20Btn) addMat20Btn.addEventListener('click', () => addRow("헬스매트", "20t", "1", "8163"));
-    if (addMat25Btn) addMat25Btn.addEventListener('click', () => addRow("헬스매트", "25t", "1", "9967"));
+    if (addMat20Btn) {
+        addMat20Btn.addEventListener('click', () => {
+            const priceInput = document.getElementById('priceMat20');
+            const price = priceInput ? priceInput.value : "8163";
+            addRow("헬스매트", "20t", "1", price);
+        });
+    }
+    if (addMat25Btn) {
+        addMat25Btn.addEventListener('click', () => {
+            const priceInput = document.getElementById('priceMat25');
+            const price = priceInput ? priceInput.value : "9967";
+            addRow("헬스매트", "25t", "1", price);
+        });
+    }
 
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
